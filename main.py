@@ -1,5 +1,6 @@
 import os
 import sys
+import hashlib
 from dotenv import load_dotenv
 
 from langchain_text_splitters import RecursiveCharacterTextSplitter
@@ -98,11 +99,12 @@ class RAGChatbot:
     def __init__(self):
         self.vectorstore = None
         self.conversation = None
-        self.messages = []  # Chat history for LCEL
+        self.messages = []
         self.processed_files = []
         self.embeddings = None
         self.current_personality = "professional"
         self.custom_personality = ""
+        self.processed_file_hashes = {}
 
         # Check for HuggingFace API key
         api_key = os.getenv("HUGGINGFACEHUB_API_TOKEN")
@@ -122,7 +124,11 @@ class RAGChatbot:
         print("✅ Embedding model loaded.")
 
         # Try to load existing vectorstore
-        self._load_existing_vectorstore()
+        # self._load_existing_vectorstore()
+        self.vectorstore = Chroma(
+            persist_directory=CHROMA_DB_PATH,
+            embedding_function=self.embeddings
+        )
 
     def _load_existing_vectorstore(self):
         """Load existing vectorstore if available."""
@@ -232,13 +238,33 @@ just reformulate it if needed and otherwise return it as is."""
 
         return rag_chain
 
+    def _get_file_hash(self, file_path: str) -> str:
+        """Calculate MD5 hash of a file."""
+        hash_md5 = hashlib.md5()
+        with open(file_path, "rb") as f:
+            for chunk in iter(lambda: f.read(4096), b""):
+                hash_md5.update(chunk)
+        return hash_md5.hexdigest()
+
     def add_documents(self, file_paths: list):
         """Process and add documents to the vectorstore."""
         all_chunks = []
 
         for file_path in file_paths:
+            if not os.path.exists(file_path):
+                print(f"❌ File not found: {file_path}")
+                continue
+
+            # Check by file path
             if file_path in self.processed_files:
                 print(f"⚠️ File '{file_path}' has already been processed. Skipping.")
+                continue
+
+            # Check by file content hash
+            file_hash = self._get_file_hash(file_path)
+            if file_hash in self.processed_file_hashes:
+                original_file = self.processed_file_hashes[file_hash]
+                print(f"⚠️ File '{file_path}' has identical content to '{original_file}'. Skipping.")
                 continue
 
             try:
@@ -247,6 +273,7 @@ just reformulate it if needed and otherwise return it as is."""
                 chunks = self.split_documents(documents)
                 all_chunks.extend(chunks)
                 self.processed_files.append(file_path)
+                self.processed_file_hashes[file_hash] = file_path
                 print(f"✅ Successfully processed: {file_path} ({len(chunks)} chunks)")
             except Exception as e:
                 print(f"❌ Error processing {file_path}: {str(e)}")
