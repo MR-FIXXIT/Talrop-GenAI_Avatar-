@@ -1,0 +1,2 @@
+from avatar.image_generation import generate_avatar_image
+from avatar.video_generation import generate_avatar_video

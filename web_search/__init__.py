@@ -1,0 +1,1 @@
+from web_search.query_router import maybe_search_web

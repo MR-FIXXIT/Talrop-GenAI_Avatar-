@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: avatar-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: avatar-worker
+  template:
+    metadata:
+      labels:
+        app: avatar-worker
+    spec:
+      containers:
+        - name: worker
+          image: avatar-gpu-worker:latest
+          resources:
+            limits:
+              nvidia.com/gpu: 1
