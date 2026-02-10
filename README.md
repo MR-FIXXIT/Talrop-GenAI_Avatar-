@@ -1,15 +1,22 @@
-# 🤖 RAG Chatbot - Terminal Edition
+# 🤖 RAG Chatbot
 
-A Retrieval-Augmented Generation (RAG) chatbot built with LangChain, ChromaDB, and HuggingFace that allows you to add PDF and TXT files and ask questions about their content via the terminal.
+A Retrieval-Augmented Generation (RAG) chatbot built with LangChain, ChromaDB, and HuggingFace that allows you to add PDF and TXT files and ask questions about their content.
+
+## 🎨 Two Interfaces Available
+
+1. **Web UI (Streamlit)** - Modern, beautiful web interface with glassmorphism design
+2. **Terminal Edition** - Classic command-line interface
 
 ## Features
 
-- **Document Upload**: Support for PDF and TXT files
-- **Persistent Storage**: Uses ChromaDB to store document embeddings locally
-- **Conversational Memory**: Maintains chat history for context-aware responses
-- **Multiple File Support**: Add and process multiple documents at once
-- **Free Models**: Uses HuggingFace's free inference API
-- **Terminal Interface**: Simple command-line interface
+- **🎨 Beautiful Web UI**: Modern Streamlit interface with glassmorphism design and gradient backgrounds
+- **🎭 Multiple Personalities**: Choose from Professional, Friendly, Concise, Teacher, Creative, or Custom personalities
+- **📁 Document Upload**: Support for PDF and TXT files with drag-and-drop
+- **💾 Persistent Storage**: Uses ChromaDB to store document embeddings locally
+- **💬 Conversational Memory**: Maintains chat history for context-aware responses
+- **📚 Multiple File Support**: Add and process multiple documents at once
+- **🆓 Free Models**: Uses HuggingFace's free inference API
+- **⚡ Two Interfaces**: Choose between modern web UI or classic terminal interface
 
 ## Installation
 
@@ -30,7 +37,25 @@ A Retrieval-Augmented Generation (RAG) chatbot built with LangChain, ChromaDB, a
 
 ## Usage
 
-1. Run the chatbot:
+### 🌐 Web UI (Recommended)
+
+1. Run the Streamlit web application:
+   ```bash
+   streamlit run app.py
+   ```
+
+2. Your browser will automatically open to `http://localhost:8501`
+
+3. **Using the Web Interface**:
+   - Upload documents using the sidebar file uploader
+   - Click "Process Documents" to add them to the database
+   - Choose a personality from the dropdown menu
+   - Start chatting in the main chat interface
+   - View statistics and manage your database from the sidebar
+
+### 💻 Terminal Edition
+
+1. Run the terminal chatbot:
    ```bash
    python main.py
    ```
@@ -64,7 +89,8 @@ A Retrieval-Augmented Generation (RAG) chatbot built with LangChain, ChromaDB, a
 ## Project Structure
 
 ```
-├── main.py              # Main terminal application
+├── app.py               # Streamlit web UI application
+├── main.py              # Terminal CLI application
 ├── requirements.txt     # Python dependencies
 ├── .env                 # Environment variables (API keys)
 ├── .env.example         # Example environment file

@@ -1,6 +1,7 @@
 import os
 import sys
 import hashlib
+import shlex
 from dotenv import load_dotenv
 
 from langchain_text_splitters import RecursiveCharacterTextSplitter
@@ -390,6 +391,9 @@ def print_help():
 ║  personality <type>       - Set chatbot personality          ║
 ║  personalities            - List available personalities     ║
 ║                                                              ║
+║  💡 Tip: Use quotes for paths with spaces:                   ║
+║      add "/path/to/My Documents/file.pdf"                    ║
+║                                                              ║
 ║  Available personalities: professional, friendly, concise,   ║
 ║                          teacher, creative, custom           ║
 ╚══════════════════════════════════════════════════════════════╝
@@ -419,8 +423,16 @@ def main():
             if not user_input:
                 continue
 
-            # Parse commands
-            parts = user_input.split()
+            # Parse commands using shlex to handle spaces in file paths
+            try:
+                parts = shlex.split(user_input)
+            except ValueError as e:
+                print(f"❌ Invalid command syntax: {e}")
+                continue
+            
+            if not parts:
+                continue
+                
             command = parts[0].lower()
 
             if command in ["exit", "quit", "q"]:
