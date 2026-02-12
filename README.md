@@ -72,15 +72,7 @@ A Retrieval-Augmented Generation (RAG) chatbot built with LangChain, ChromaDB, a
 └── README.md            # This file
 ```
 
-## Configuration
 
-You can modify these settings in `main.py`:
-
-- `CHROMA_DB_PATH`: Directory for ChromaDB storage (default: `./chroma_db`)
-- `CHUNK_SIZE`: Size of text chunks for processing (default: 1000)
-- `CHUNK_OVERLAP`: Overlap between chunks (default: 200)
-- LLM Model: Currently uses `mistralai/Mistral-7B-Instruct-v0.3` (can be changed to other HuggingFace models)
-- Embeddings Model: Uses `sentence-transformers/all-MiniLM-L6-v2` (runs locally)
 
 ## Requirement
 
